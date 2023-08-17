@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -47,6 +48,13 @@ public class Member extends BaseEntity {
                 .email(email)
                 .build();
 
+    }
+
+    public Map<String, Object> toClaims(){
+        return Map.of(
+                "id",getId()
+                ,"username",getUsername()
+        );
     }
 
 }
