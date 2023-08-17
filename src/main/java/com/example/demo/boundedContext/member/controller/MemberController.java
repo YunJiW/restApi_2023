@@ -37,6 +37,14 @@ public class MemberController {
 
         resp.addHeader("Authentication",accressToken);
 
-        return "응답 본문";
+        return """
+                {
+                    "resultCode" : "S-1",
+                    "msg" : "액세스 토큰이 생성되었습니다.",
+                    "data" :{
+                        "accessToken" : "%s"
+                        }
+                }
+                """.formatted(accressToken).stripIndent();
     }
 }
