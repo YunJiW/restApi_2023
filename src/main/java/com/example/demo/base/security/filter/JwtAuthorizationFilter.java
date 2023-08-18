@@ -34,6 +34,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String token = bearerToken.substring("Bearer".length());
 
 
+            //인증된경우
             if(jwtProvider.verify(token)){
                 Map<String, Object> claims = jwtProvider.getClaims(token);
                 String username = (String)claims.get("username");
@@ -54,7 +55,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public void forceAuthentication(Member member){
         User user = new User(member.getUsername(),member.getPassword(),member.getAuthorities());
 
-        //스프링 시큐리티 객체에 저장할 인증 객체 생성
+        //스프링 시큐리티 객체에 저장할 authentication 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 UsernamePasswordAuthenticationToken.authenticated(user,
                         null,
@@ -63,7 +64,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         
-        //context에 인증 객체 저장
+        //context에 authentication 객체 저장
         context.setAuthentication(authenticationToken);
 
         SecurityContextHolder.setContext(context);
