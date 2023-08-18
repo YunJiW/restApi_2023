@@ -38,7 +38,7 @@ class MemberControllerTest {
     void t1() throws Exception{
 
         //when
-        ResultActions resultActions = mvc.perform(post("/member/login")
+        ResultActions resultActions = mvc.perform(post("/api/v1/member/login")
                 .content("""
                         {
                             "username" : "user1",
