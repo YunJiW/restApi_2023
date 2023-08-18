@@ -18,8 +18,10 @@
 
   - 회원 목록 : GET http://localhost:8080/members
 
+  - 액세스 토큰을 발급
   - 회원 로그인 : POST http://localhost:8080/member/login
 
+  - 액세스 토큰을 소비
   - 현재 로그인한 회원의 정보 : GET http://localhost:8080/member/me
 
 -  추가로 PostMan 사용법도 익혀보자

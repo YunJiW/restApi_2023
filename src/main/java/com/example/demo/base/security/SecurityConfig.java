@@ -18,6 +18,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
+                .securityMatcher("/api/**") //아래 모든 설정이 /api/** 경로에만 설정됨.
+                .authorizeHttpRequests(authorizeHttpRequests ->
+                        authorizeHttpRequests
+                                .requestMatchers("/api/*/member/login").permitAll() //로그인은 누구나 가능
+                                .anyRequest().authenticated()) // 그외는 인증된 사용자만 가능하게 
                 .cors(cors->cors.disable()) // 타도메인에서 APi 호출가능
                 .csrf(csrf -> csrf.disable()) // CSRF 토큰 끄기
                 .httpBasic(httpBasic -> httpBasic.disable()) //httpBasic 로그인 방법끄기

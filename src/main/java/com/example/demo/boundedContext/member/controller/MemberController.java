@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.member.controller;
 
 import com.example.demo.base.rsData.RsData;
+import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -9,11 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -40,11 +41,27 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp){
+    public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         String accressToken = memberService.genAccessToken(loginRequest.getUsername(),loginRequest.getPassword());
 
         return RsData.of("S-1",
                 "액세스 토큰 생성 완료",
                 new LoginResponse(accressToken));
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class MeResponse{
+        private final Member member;
+    }
+
+    @GetMapping(value = "/me",consumes = ALL_VALUE)
+    public RsData<MeResponse> me(@AuthenticationPrincipal User user){
+        Member member = memberService.findByUsername(user.getUsername()).get();
+
+        return RsData.of("S-1",
+                "성공",
+                new MeResponse(member));
+
     }
 }
