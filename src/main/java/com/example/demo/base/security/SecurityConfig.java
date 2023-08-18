@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
                                 .requestMatchers("/api/*/member/login").permitAll() //로그인은 누구나 가능
-                                .anyRequest().authenticated()) // 그외는 인증된 사용자만 가능하게 
+                                .anyRequest().authenticated()) // 그외는 인증된 사용자만 가능하게
                 .cors(cors->cors.disable()) // 타도메인에서 APi 호출가능
                 .csrf(csrf -> csrf.disable()) // CSRF 토큰 끄기
                 .httpBasic(httpBasic -> httpBasic.disable()) //httpBasic 로그인 방법끄기
@@ -35,8 +35,5 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
 }

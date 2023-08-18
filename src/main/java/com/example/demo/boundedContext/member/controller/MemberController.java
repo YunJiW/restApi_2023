@@ -56,6 +56,7 @@ public class MemberController {
         private final MemberDto member;
     }
 
+    //@AuthenticationPrincipal 을 통해서 SpringSecurity에서 현재 회원이 누군지 알 수 있음.
     @GetMapping(value = "/me",consumes = ALL_VALUE)
     public RsData<MeResponse> me(@AuthenticationPrincipal User user){
         Member member = memberService.findByUsername(user.getUsername()).get();
