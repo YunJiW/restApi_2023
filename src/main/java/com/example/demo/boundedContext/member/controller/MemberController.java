@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.member.controller;
 
 import com.example.demo.base.rsData.RsData;
+import com.example.demo.boundedContext.member.dto.MemberDto;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,7 +53,7 @@ public class MemberController {
     @AllArgsConstructor
     @Getter
     public static class MeResponse{
-        private final Member member;
+        private final MemberDto member;
     }
 
     @GetMapping(value = "/me",consumes = ALL_VALUE)
@@ -61,7 +62,7 @@ public class MemberController {
 
         return RsData.of("S-1",
                 "성공",
-                new MeResponse(member));
+                new MeResponse(MemberDto.of(member)));
 
     }
 }
