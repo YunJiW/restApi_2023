@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -47,17 +48,12 @@ class MemberControllerTest {
                 .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
         ).andDo(print());
 
-        resultActions.andExpect(status().is2xxSuccessful());
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").exists())
+                .andExpect(jsonPath("$.data.accessToken").exists());
 
-
-        MvcResult mvcResult=
-                resultActions.andReturn();
-
-        MockHttpServletResponse response = mvcResult.getResponse();
-
-        String authentication = response.getHeader("Authentication");
-
-        Assertions.assertThat(authentication).isNotEmpty();
     }
 
 }
