@@ -2,9 +2,11 @@ package com.example.demo.boundedContext.member.dto;
 
 
 import com.example.demo.boundedContext.member.entity.Member;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class MemberDto {
 
     private long id;

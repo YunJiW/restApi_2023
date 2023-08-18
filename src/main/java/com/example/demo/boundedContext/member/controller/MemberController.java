@@ -57,6 +57,7 @@ public class MemberController {
     }
 
     //@AuthenticationPrincipal 을 통해서 SpringSecurity에서 현재 회원이 누군지 알 수 있음.
+    // - 추가 설명 : 스프링 시큐리티에 등록되어있는 유저를 가져온다.
     @GetMapping(value = "/me",consumes = ALL_VALUE)
     public RsData<MeResponse> me(@AuthenticationPrincipal User user){
         Member member = memberService.findByUsername(user.getUsername()).get();
