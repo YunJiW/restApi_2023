@@ -44,8 +44,8 @@ public class MemberController {
     public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp){
         String accressToken = memberService.genAccessToken(loginRequest.getUsername(),loginRequest.getPassword());
 
-        resp.addHeader("Authentication",accressToken);
-
-        return RsData.of("S-1","액세스 토큰 생성 완료",new LoginResponse(accressToken));
+        return RsData.of("S-1",
+                "액세스 토큰 생성 완료",
+                new LoginResponse(accressToken));
     }
 }
