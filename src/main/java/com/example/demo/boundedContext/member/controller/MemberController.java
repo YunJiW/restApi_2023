@@ -1,11 +1,14 @@
 package com.example.demo.boundedContext.member.controller;
 
+import com.example.demo.base.rsData.RsData;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,21 +33,19 @@ public class MemberController {
         private String password;
     }
 
+    @AllArgsConstructor
+    @Getter
+    public static class LoginResponse{
+        private final String accessToken;
+    }
+
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp){
+    public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp){
         String accressToken = memberService.genAccessToken(loginRequest.getUsername(),loginRequest.getPassword());
 
         resp.addHeader("Authentication",accressToken);
 
-        return """
-                {
-                    "resultCode" : "S-1",
-                    "msg" : "액세스 토큰이 생성되었습니다.",
-                    "data" :{
-                        "accessToken" : "%s"
-                        }
-                }
-                """.formatted(accressToken).stripIndent();
+        return RsData.of("S-1","액세스 토큰 생성 완료",new LoginResponse(accressToken));
     }
 }
