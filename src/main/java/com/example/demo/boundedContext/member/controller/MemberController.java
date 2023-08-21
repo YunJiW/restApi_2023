@@ -4,6 +4,7 @@ import com.example.demo.base.rsData.RsData;
 import com.example.demo.boundedContext.member.dto.MemberDto;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -44,6 +45,7 @@ public class MemberController {
 
 
     @PostMapping("/login")
+    @Operation(summary = "로그인,액세스 발급")
     public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         String accressToken = memberService.genAccessToken(loginRequest.getUsername(),loginRequest.getPassword());
 
@@ -61,6 +63,7 @@ public class MemberController {
     //@AuthenticationPrincipal 을 통해서 SpringSecurity에서 현재 회원이 누군지 알 수 있음.
     // - 추가 설명 : 스프링 시큐리티에 등록되어있는 유저를 가져온다.
     @GetMapping(value = "/me",consumes = ALL_VALUE)
+    @Operation(summary = "로그인 된 사용자 정보")
     public RsData<MeResponse> me(@AuthenticationPrincipal User user){
         Member member = memberService.findByUsername(user.getUsername()).get();
 
