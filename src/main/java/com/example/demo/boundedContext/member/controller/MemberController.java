@@ -4,6 +4,7 @@ import com.example.demo.base.rsData.RsData;
 import com.example.demo.boundedContext.member.dto.MemberDto;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = "/api/v1/member", produces = APPLICATION_JSON_VALUE,consumes = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Tag(name ="MemberController",description = "로그인,로그인 된 회원의 정보 제공")
 public class MemberController {
 
     private final MemberService memberService;
