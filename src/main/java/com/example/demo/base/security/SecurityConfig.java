@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -17,11 +18,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .securityMatcher("/api/**")
+                .exceptionHandling(except -> except.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(request -> request
                         //로그인은 누구나 가능하게
                         .requestMatchers(new AntPathRequestMatcher("/api/*/member/login")).permitAll()
