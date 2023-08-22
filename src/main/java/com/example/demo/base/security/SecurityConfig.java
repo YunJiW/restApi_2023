@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         //로그인은 누구나 가능하게
                         .requestMatchers(new AntPathRequestMatcher("/api/*/member/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/articles")).permitAll()
                         //그외의 경우에는 인증된 사용자만 가능하게 한다.
                         .anyRequest().authenticated())
                 .cors(cors->cors.disable()) // 타도메인에서 APi 호출가능
