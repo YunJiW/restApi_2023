@@ -4,6 +4,7 @@ import com.example.demo.base.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,10 +27,10 @@ public class SecurityConfig {
                 .securityMatcher("/api/**")
                 .exceptionHandling(except -> except.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(request -> request
-                        //로그인은 누구나 가능하게
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/member/login")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/articles")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/articles/*")).permitAll()
+                        //로그인은 누구나 가능하게 POST만 허용
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/member/login","POST")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/articles","GET")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/articles/*","GET")).permitAll()
                         //그외의 경우에는 인증된 사용자만 가능하게 한다.
                         .anyRequest().authenticated())
                 .cors(cors->cors.disable()) // 타도메인에서 APi 호출가능
