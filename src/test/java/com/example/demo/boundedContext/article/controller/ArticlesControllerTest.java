@@ -40,4 +40,20 @@ class ArticlesControllerTest {
                 .andExpect(jsonPath("$.data.articles[0].id").exists());
     }
 
+    @Test
+    @DisplayName("GET /articles/5")
+    void t2() throws Exception {
+
+        //when
+        ResultActions resultActions = mvc
+                .perform(
+                        get("/api/v1/articles/5"))
+                .andDo(print());
+
+        resultActions.andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").exists())
+                .andExpect(jsonPath("$.data.article.id").value(5));
+    }
+
 }

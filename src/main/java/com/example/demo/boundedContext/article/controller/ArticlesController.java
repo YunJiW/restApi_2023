@@ -10,10 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -32,12 +34,32 @@ public class ArticlesController {
         private final List<Article> articles;
     }
 
+    @AllArgsConstructor
+    @Getter
+    public static class ArticleResponse{
+        private final Article article;
+    }
+
 
     @GetMapping(value = "")
-    @Operation(summary = "게시물들")
+    @Operation(summary = "게시물들 조회")
     public RsData<ArticlesResponse> articles(){
         List<Article> article = articleService.findAll();
 
         return RsData.of("S-1","성공",new ArticlesResponse(article));
     }
+
+    @GetMapping(value = "/{id}")
+    @Operation(summary = "게시물 단건 조회")
+    public RsData<ArticleResponse> article(@PathVariable Long id){
+        Optional<Article> article = articleService.findById(id);
+
+        if(article.isEmpty()){
+            return RsData.of("F-1","%d번 게시물이 존재하지 않습니다".formatted(id),null);
+        }
+
+        return RsData.of("S-1","성공",new ArticleResponse(article.get()));
+
+    }
+
 }
