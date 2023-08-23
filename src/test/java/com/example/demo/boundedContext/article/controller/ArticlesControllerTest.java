@@ -10,10 +10,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,6 +54,31 @@ class ArticlesControllerTest {
                 .andExpect(jsonPath("$.resultCode").value("S-1"))
                 .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.data.article.id").value(5));
+    }
+
+    @Test
+    @DisplayName("PATCH /articles/5")
+    void t3() throws Exception{
+
+        //when
+        ResultActions resultActions =mvc.perform(
+                patch("/api/v1/articles/5")
+                        .content("""
+                                {
+                                    "subject": "제목 5 !!!",
+                                    "content": "내용 5 !!!"
+                                }
+                                """
+                        )
+        ).andDo(print());
+        
+        //기대하는 결과값들
+        resultActions.andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").exists())
+                .andExpect(jsonPath("$.data.article.id").value(5))
+                .andExpect(jsonPath("$.data.article.subject").value("제목 5 !!!")
+                        ).andExpect(jsonPath("$.data.article.content").value("내용 5 !!!"));
     }
 
 }
