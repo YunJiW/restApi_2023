@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +56,13 @@ public class ArticlesController {
         }
 
         return RsData.of("S-1","성공",new ArticleResponse(article.get()));
+
+    }
+
+    @PatchMapping(value = "/{id}")
+    @Operation(summary = "게시물 수정")
+    public RsData<Article> update(@PathVariable Long id){
+        return  null;
 
     }
 
