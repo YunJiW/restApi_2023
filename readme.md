@@ -6,13 +6,13 @@
   -  ** API의 구조를 명확하게 정의하고 관리하기 위해서 사용된다.
 
 - 예시
-  - [ ] 게시물 목록 : GET http://localhost:8080/articles
+  - [x] 게시물 목록 : GET http://localhost:8080/articles
 
-  - [ ] 게시물 등록 : POST http://localhost:8080/articles
+  - [x] 게시물 등록 : POST http://localhost:8080/articles
 
-  - [ ] 게시물 단건 조회 : GET http://localhost:8080/articles/1
+  - [x] 게시물 단건 조회 : GET http://localhost:8080/articles/1
 
-  - [ ] 게시물 수정 : PATCH http://localhost:8080/articles/1
+  - [x] 게시물 수정 : PATCH http://localhost:8080/articles/1
 
   - [ ] 게시물 삭제 : DELETE http://localhost:8080/articles/1
 

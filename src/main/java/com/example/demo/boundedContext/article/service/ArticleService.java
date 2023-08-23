@@ -47,10 +47,11 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public void modify(Article article,String subject,String content){
+    public RsData<Article> modify(Article article,String subject,String content){
         article.modify(article,subject,content);
         articleRepository.save(article);
 
+        return RsData.of("S-1","%d번 게시물이 수정되었습니다.".formatted(article.getId()),article);
     }
     
     //수정 할수 있는지 체크

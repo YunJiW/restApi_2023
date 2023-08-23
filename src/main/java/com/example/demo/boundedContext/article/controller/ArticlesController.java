@@ -65,6 +65,23 @@ public class ArticlesController {
         private final Article article;
     }
 
+    @Data
+    public static class ModifyRequest{
+
+        @NotBlank
+        private String subject;
+
+        @NotBlank
+        private String content;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class ModifyResponse{
+        private final Article article;
+    }
+
+
 
     @GetMapping(value = "")
     @Operation(summary = "게시물들 조회")
@@ -106,10 +123,33 @@ public class ArticlesController {
 
     }
 
-    @PatchMapping(value = "/{id}")
-    @Operation(summary = "게시물 수정")
-    public RsData<Article> update(@PathVariable Long id){
-        return  null;
+    @PatchMapping(value = "/{id}",consumes = APPLICATION_JSON_VALUE)
+    @Operation(summary = "게시물 수정",security = @SecurityRequirement(name ="bearerAuth"))
+    public RsData<ModifyResponse> modify(@AuthenticationPrincipal User user
+            ,@Valid @RequestBody ModifyRequest modifyRequest
+            ,@PathVariable Long id){
+
+        Member member = memberService.findByUsername(user.getUsername()).orElseThrow();
+
+        Optional<Article> optionalArticle = articleService.findById(id);
+
+        //찾는 게시물이 없는 경우
+        if(optionalArticle.isEmpty()){
+            return RsData.of("F-1","%d번 게시물은 존재하지 않습니다.".formatted(id),null);
+        }
+
+        //수정을 할 수 있는지 체크
+        RsData canModify = articleService.canModify(member,optionalArticle.get());
+
+        if(canModify.isFail()){
+            return canModify;
+        }
+
+        RsData<Article> modifyRs = articleService.modify(optionalArticle.get(),modifyRequest.getSubject(),modifyRequest.getContent());
+
+        return RsData.of(modifyRs.getResultCode(),
+                modifyRs.getMsg(),
+                new ModifyResponse(modifyRs.getData()));
 
     }
 

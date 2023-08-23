@@ -89,6 +89,7 @@ class ArticlesControllerTest {
 
     @Test
     @DisplayName("PATCH /articles/5")
+    @WithUserDetails("user1")
     void t4() throws Exception {
 
         //when
@@ -100,7 +101,7 @@ class ArticlesControllerTest {
                                     "content": "내용 5 !!!"
                                 }
                                 """
-                        )
+                        ).contentType(new MediaType(MediaType.APPLICATION_JSON,StandardCharsets.UTF_8))
         ).andDo(print());
 
         //기대하는 결과값들
