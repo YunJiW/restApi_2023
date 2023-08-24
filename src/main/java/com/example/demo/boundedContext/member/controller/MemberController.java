@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.ALL_VALUE;
@@ -48,7 +49,16 @@ public class MemberController {
     @PostMapping("/login")
     @Operation(summary = "로그인,액세스 발급")
     public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
-        String accressToken = memberService.genAccessToken(loginRequest.getUsername(),loginRequest.getPassword());
+         Member member = memberService.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException(loginRequest.getUsername()));
+
+         //토큰을 발급받을수 있는지 체크
+         RsData canToken = memberService.CanGenAccessToken(member,loginRequest.getPassword());
+
+         //불가능할시 그냥반환
+         if(canToken.isFail())
+             return canToken;
+
+        String accressToken = memberService.genAccessToken(member,loginRequest.getPassword());
 
         return RsData.of("S-1",
                 "액세스 토큰 생성 완료",

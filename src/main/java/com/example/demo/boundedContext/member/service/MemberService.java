@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.member.service;
 
 import com.example.demo.base.jwt.JwtProvider;
+import com.example.demo.base.rsData.RsData;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +28,7 @@ public class MemberService {
         return member;
     }
 
-    public String genAccessToken(String username,String password){
-        Member member = findByUsername(username).orElse(null);
-
-        if(member == null) return null;
-
-        if(!passwordEncoder.matches(password,member.getPassword())){
-            return null;
-        }
-
+    public String genAccessToken(Member member,String password){
         return jwtProvider.genToken(member.toClaims(),60*60*24*365);
     }
 
@@ -45,5 +38,14 @@ public class MemberService {
 
     public Optional<Member> findById(Long id) {
         return memberRepository.findById(id);
+    }
+
+    public RsData CanGenAccessToken(Member member, String password) {
+        if(!passwordEncoder.matches(password,member.getPassword())){
+            return RsData.of("F-1","비밀번호가 일치하지 않습니다.");
+        }
+
+        return RsData.of("S-1","토큰 생성 가능");
+
     }
 }
