@@ -23,7 +23,7 @@ public class Article extends BaseEntity {
     private String content;
 
 
-    public static Article build(Member author,String subject,String content){
+    public static Article build(Member author, String subject, String content) {
         return Article.builder()
                 .member(author)
                 .subject(subject)
@@ -31,9 +31,10 @@ public class Article extends BaseEntity {
                 .build();
     }
 
-    public Article modify(Article article,String subject,String content){
-        article.subject = subject;
-        article.content = content;
+    public Article modify(Article article, String subject, String content) {
+        if (subject != null) article.subject = subject;
+        if (content != null)
+            article.content = content;
 
         return article;
     }
