@@ -36,6 +36,9 @@ public class Member extends BaseEntity {
     public Collection<? extends GrantedAuthority> getAuthorities(){
         List<GrantedAuthority> authorityList  = new ArrayList<>();
 
+        if(getUsername().equals("admin")){
+            authorityList.add(new SimpleGrantedAuthority("ADMIN"));
+        }
         authorityList.add(new SimpleGrantedAuthority("MEMBER"));
 
         return authorityList;

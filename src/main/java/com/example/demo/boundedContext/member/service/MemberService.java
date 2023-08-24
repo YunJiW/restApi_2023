@@ -5,9 +5,12 @@ import com.example.demo.base.rsData.RsData;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +43,10 @@ public class MemberService {
         return memberRepository.findById(id);
     }
 
+    public List<Member> findAll(){
+        return memberRepository.findAll();
+    }
+
     public RsData CanGenAccessToken(Member member, String password) {
         if(!passwordEncoder.matches(password,member.getPassword())){
             return RsData.of("F-1","비밀번호가 일치하지 않습니다.");
@@ -47,5 +54,14 @@ public class MemberService {
 
         return RsData.of("S-1","토큰 생성 가능");
 
+    }
+
+    public RsData CanCheckList(Member member) {
+        for(GrantedAuthority grantedAuthority : member.getAuthorities()){
+            if(grantedAuthority.getAuthority().equals("ADMIN")){
+                return RsData.of("S-1","회원목록 권한있음");
+            }
+        }
+        return RsData.of("F-1","권한이 없습니다.");
     }
 }
