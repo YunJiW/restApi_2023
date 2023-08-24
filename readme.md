@@ -14,7 +14,7 @@
 
   - [x] 게시물 수정 : PATCH http://localhost:8080/articles/1
 
-  - [ ] 게시물 삭제 : DELETE http://localhost:8080/articles/1
+  - [x] 게시물 삭제 : DELETE http://localhost:8080/articles/1
 
   - [ ] 회원 목록 : GET http://localhost:8080/members
 

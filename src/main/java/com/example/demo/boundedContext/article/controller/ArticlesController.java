@@ -151,4 +151,28 @@ public class ArticlesController {
 
     }
 
+    @PostMapping(value = "/{id}")
+    @Operation(summary = "게시물 삭제",security = @SecurityRequirement(name ="bearerAuth"))
+    public RsData Delete(@AuthenticationPrincipal User user,@PathVariable Long id){
+        Member member = memberService.findByUsername(user.getUsername()).orElseThrow();
+        Optional<Article> article = articleService.findById(id);
+
+        if(article.isEmpty()){
+            return RsData.of("F-34","이 게시물은 존재하지 않습니다.",null);
+        }
+
+        RsData canDelete = articleService.canDelete(member,article.get());
+        //실패시에도 실패 코드 반환
+        if(canDelete.isFail()){
+            return canDelete;
+        }
+
+        articleService.delete(article.get());
+
+        return RsData.of("S-55",
+                "%d 번 게시물을 삭제하였습니다.".formatted(id)
+                ,article.get());
+
+    }
+
 }
