@@ -16,7 +16,7 @@
 
   - [x] 게시물 삭제 : DELETE http://localhost:8080/articles/1
 
-  - [ ] 회원 목록 : GET http://localhost:8080/members
+  - [x] 회원 목록 : GET http://localhost:8080/members
 
   - 액세스 토큰을 발급
   - [x] 회원 로그인 : POST http://localhost:8080/member/login
